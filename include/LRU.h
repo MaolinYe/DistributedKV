@@ -6,12 +6,19 @@
 #define LRU_H
 #include<iostream>
 #include<unordered_map>
+#include <utility>
 
 struct LRU_Node {
     std::string key;
     std::string value;
     LRU_Node *prior = nullptr;
     LRU_Node *next = nullptr;
+
+    LRU_Node() = default;
+
+    LRU_Node(std::string key, std::string value, LRU_Node *prior, LRU_Node *next): key(std::move(key)), value(std::move(value)), prior(prior),
+        next(next) {
+    }
 };
 
 class LRU {

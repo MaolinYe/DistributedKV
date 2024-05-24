@@ -1,7 +1,7 @@
-#include"Application.h"
+#include"sever.h"
 
 int main() {
-    Application application;
-    application.Run();
+    Sever sever;
+    sever.run();
     return 0;
 }

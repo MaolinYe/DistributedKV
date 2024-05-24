@@ -6,6 +6,7 @@
 #define KVDBHANDLER_H
 #include"LRU.h"
 #include<iostream>
+#include <utility>
 #include<vector>
 #include<unordered_map>
 #include<algorithm>
@@ -29,6 +30,11 @@ struct Survival {
     long long time = 0;
     std::string key;
 
+    Survival() = default;
+
+    Survival(long long time, std::string key): time(time), key(std::move(key)) {
+    }
+
     bool operator<(const Survival &a) const {
         return time > a.time;
     }
@@ -36,6 +42,14 @@ struct Survival {
 
 
 class KVDBHandler {
+private:
+    int database_address = -1;
+    std::string database_path;
+    std::unordered_map<std::string, size_t> index;
+    std::vector<Survival> life;
+    LRU LRUCache;
+
+public:
     static void Help() {
         std::cout << std::endl << "----HELP----" << std::endl <<
                 "set key value" << std::endl <<
@@ -49,17 +63,9 @@ class KVDBHandler {
                 "------------" << std::endl;
     }
 
-public:
-    int database_address = -1;
-    std::string database_path;
-    std::unordered_map<std::string, size_t> index;
-    std::vector<Survival> life;
-    LRU LRUCache;
-
-    KVDBHandler(const std::string &database_path) : database_path(database_path) {
+    explicit KVDBHandler(std::string database_path) : database_path(std::move(database_path)) {
         OpenKVDB();
         LoadIndex();
-        Help();
     }
 
     ~KVDBHandler() {
@@ -112,7 +118,7 @@ public:
         LRUCache.Set(key, value); // load LRUCache
         size_t key_length = key.length(); // write in the file
         int value_length = value.length();
-        lseek(database_address,0,SEEK_END); // 移到文件末尾写入
+        lseek(database_address, 0,SEEK_END); // 移到文件末尾写入
         write(database_address, &key_length, sizeof(key_length));
         write(database_address, (char *) key.c_str(), key.length());
         index[key] = lseek(database_address, 0, SEEK_CUR);
@@ -139,7 +145,7 @@ public:
         int value_length = 0;
         key_length = key.length();
         value_length = -1;
-        lseek(database_address,0,SEEK_END); // 移到文件末尾写入
+        lseek(database_address, 0,SEEK_END); // 移到文件末尾写入
         write(database_address, &key_length, sizeof(key_length));
         write(database_address, (char *) key.c_str(), key.length());
         write(database_address, &value_length, sizeof(value_length));
