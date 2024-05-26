@@ -1,7 +1,7 @@
-#include"sever.h"
+#include"Server.h"
 
 int main() {
-    Sever sever;
-    sever.run();
+    Server server;
+    server.run();
     return 0;
 }

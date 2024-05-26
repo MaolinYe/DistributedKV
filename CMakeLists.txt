@@ -5,5 +5,6 @@ set(CMAKE_CXX_STANDARD 11)
 add_executable(DistributedKV main.cpp include/LRU.h
         include/KVDBHandler.h
         include/application.h
-        include/sever.h)
+        include/Server.h
+        include/logger.h)
 include_directories(include)
