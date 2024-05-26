@@ -9,19 +9,19 @@
 #include<sstream>
 
 class Application {
-    static std::string &Standardize(std::string &todo) {
-        for (auto &it: todo)
-            if (std::isupper(it))
-                it = it + 'a' - 'A';
-        return todo;
-    }
-
     KVDBHandler *kvdb_handler = nullptr;
     std::string todo, key, value;
 
 public:
     Application() {
         kvdb_handler = new KVDBHandler("KVDB.txt");
+    }
+
+    static std::string &Standardize(std::string &todo) {
+        for (auto &it: todo)
+            if (std::isupper(it))
+                it = it + 'a' - 'A';
+        return todo;
     }
 
     // 从控制台读取输入
@@ -98,7 +98,7 @@ public:
                 break;
             else oss << "Sorry, please input the right instruction.";
         }
-        oss<<std::endl;
+        oss << std::endl;
         return oss.str();
     }
 };

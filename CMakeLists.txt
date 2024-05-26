@@ -6,5 +6,6 @@ add_executable(DistributedKV main.cpp include/LRU.h
         include/KVDBHandler.h
         include/application.h
         include/Server.h
-        include/logger.h)
+        include/logger.h
+        include/HashRing.h)
 include_directories(include)
